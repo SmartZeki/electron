@@ -5,9 +5,9 @@
 #ifndef ATOM_BROWSER_UI_X_X_WINDOW_UTILS_H_
 #define ATOM_BROWSER_UI_X_X_WINDOW_UTILS_H_
 
-#include "ui/gfx/x/x11.h"
-
 #include <string>
+
+#include "ui/gfx/x/x11.h"
 
 namespace atom {
 
