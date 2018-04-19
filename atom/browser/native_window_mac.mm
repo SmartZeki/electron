@@ -206,7 +206,7 @@ enum {
 
 #endif
 
-@interface AtomNSWindow : EventDispatchingWindow<QLPreviewPanelDataSource, QLPreviewPanelDelegate, NSTouchBarDelegate> {
+@interface AtomNSWindow : EventDispatchingWindow<QLPreviewPanelDataSource, QLPreviewPanelDelegate> {
  @private
   atom::NativeWindowMac* shell_;
   bool enable_larger_than_screen_;
@@ -238,14 +238,6 @@ enum {
 - (NSTouchBar*)makeTouchBar {
   if (shell_->atom_touch_bar())
     return [shell_->atom_touch_bar() makeTouchBar];
-  else
-    return nil;
-}
-
-- (NSTouchBarItem*)touchBar:(NSTouchBar*)touchBar
-      makeItemForIdentifier:(NSTouchBarItemIdentifier)identifier {
-  if (touchBar && shell_->atom_touch_bar())
-    return [shell_->atom_touch_bar() makeItemForIdentifier:identifier];
   else
     return nil;
 }
@@ -1504,9 +1496,10 @@ void NativeWindowMac::SetTouchBar(
   if (![window_ respondsToSelector:@selector(touchBar)])
     return;
 
-  atom_touch_bar_.reset([[AtomTouchBar alloc] initWithDelegate:window_.get()
-                                                        window:this
-                                                      settings:items]);
+  atom_touch_bar_.reset([[AtomTouchBar alloc]
+      initWithDelegate:window_delegate_.get()
+                window:this
+              settings:items]);
   [window_ setTouchBar:nil];
 }
 
